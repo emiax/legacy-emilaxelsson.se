@@ -1,0 +1,73 @@
+<p>
+  I am right in the middle of the process of rewriting <em>Kalkyl</em> which is the module of Continous responsible for working with symbolic math. Since this module will act as a core part of the application, I find it extremely important that the code that goes into this module is childishly simple to read and understand. JavaScript is a language that allows the programmer to structure applications in a thousand ways. In Java, for example, a file must contain excactly one class – not less, not more. To see what methods that are available on an object, you can simply scroll through the code in the class definition.
+</p><p>
+In JavaScript, on the other hand, methods and fields can be dynamically added to any object at any time. But, if one were to do this, one would quickly end up with a complete mess. Instead, there are some different patterns that I have seen many programmers use. Some of these patterns are completely different from how a class in Java, or C++ is structured and some are trying to mimic the "classical" approaches.
+</p>
+<h3>The Module Pattern</h3>
+<p>
+The <a href="http://www.adequatelygood.com/JavaScript-Module-Pattern-In-Depth.html">top hit</a> on Google in a search for <a href="https://www.google.se/search?q=javascript+module+pattern">"JavaScript module pattern"</a> descibes techniques that involve using closure to keep variables and functions private. To achieve something similar to class inheritance, it is suggested that you loop through the members of another object and add references to these to <em>this</em>. This approach completely ignores the prototypal nature of JavaScript. It breaks the <em>instanceof</em> operator, and I find it very weird to scan a file for loops copying references to methods to figure out who the parent class is.
+</p>
+
+<h3>Assigning a new prototype to the constructor</h3>
+<p>
+Another pattern that for example <a href="https://github.com/mrdoob/three.js/blob/master/src/core/Geometry.js">Three.js</a> uses is to first create a constructor function, and then add methods to the prototype. The functions end up being stored on the __proto__ member of the object, which means that calls to <em>this.foo()</em> are delegated to <em>this.__proto__.foo()</em>. The files end up with a more clear list of the methods available, which I like. But things get a bit messy when you want inheritance. To inherit from another "class", you have to create a new instance of that parent class and set the prototype of the subclass' constructor  to the instance of the parent class. It's not only difficult to say, it's also difficult to understand.
+</p>
+
+<h3>Quack.js</h3>
+<p>I borrowed ideas from both these patterns when I wrote <a href="http://github.com/emiax/quack.js">Quack.js</a>, which is an extremely lightweight library that lets JavaScript programmers define classes like this:
+</p>
+
+<pre class="brush: js; ruler: true;">
+  var SomeClass = quack.createClass({
+    constructor: function (bar) {
+      this.foo = bar;
+    },
+
+    someMethod: function () {
+       ...
+    }
+  
+  });
+
+  var SomeSubclass = quack.createClass(SomeClass, function () {
+     someNewMethod: function () {
+        ...
+     }
+  });
+
+</pre>
+<p>I also added Java-style abstract classes and interfaces to Quack. <em>quack.createClass</em> will complain if you try to create a class with abstract metods without declaring it abstract. You can not instanciate abstract classes. I do not perform any type checking to see if methods are called with arguments of correct types, but I still find these features useful. Declaring classes and methods abstract is a very nice way of showing your intentions, and I would say that it makes code more readable.</p>
+
+
+<pre class="brush: js; ruler: true;">
+  var SomeAbstractClass = quack.createAbstractClass({
+    constructor: function (bar) {
+      this.foo = bar;
+    },
+
+    someMethod: new quack.AbstractMethod()
+    
+  
+  });
+
+  var SomeInterface = quack.createInterface([
+  
+    'someOtherMethod'
+  
+  ]);
+
+
+  var SomeSubclass = quack.createClass(SomeClass, [SomeInterface], function () {
+     someMethod: function () {
+        // add your implementation
+     }
+
+     someOtherMethod: function () {
+        // add your implementation
+     }
+
+  });
+
+</pre>
+
+<p>You can find the source of <a href="http://github.com/emiax/quack.js">Quack.js at Github</a>! Feel free to do anything you want with it.</p>

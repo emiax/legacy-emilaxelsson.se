@@ -1,0 +1,228 @@
+html, body {
+    font-family: 'Lato', sans-serif;
+    background-color: #43403f;
+}
+
+#page {
+    background-color: #f4f4f4;
+    width: 700px;
+    margin: 0 auto;
+}
+
+#page p {
+    color: #635a46;
+}
+
+h1 {
+    font-size: 3em;
+    color: #544931;
+    padding: 70px 0 0 40px;
+    font-family: 'Raleway';
+    font-weight: 300;
+}
+
+h1 a {
+    color: #544931;
+}
+
+.returnLink {
+    font-size: 0.9em;
+    padding: 0 40px 40px 40px;
+}
+
+.returnLink a {
+    color: #544931;
+}
+
+header {
+    background-color: #000;
+    width: 700px;
+    margin: 100px auto 0;
+    color: #fff;
+    line-height: 1.2em;
+    padding: 10px 0;
+
+}
+
+header p {
+    color: #999;
+    font-size: 0.9em;
+    padding: 10px 40px;
+    font-weight: 400;
+}
+
+header a {
+    color: #fff;
+}
+
+
+.more {
+    background-color: #dedede;
+    width: 700px;
+    margin: 0 auto 0;
+    line-height: 1.2em; 
+}
+
+.more p {
+    color: #635a46;
+    font-size: 0.9em;
+    padding: 20px 40px;
+    font-weight: 400;
+    text-align: right;
+}
+
+#archive, #more {
+    background-color: #dedede;
+    width: 700px;
+    margin: 0 auto 0;
+    line-height: 1.2em; 
+}
+
+#archive p,
+#more p {
+    color: #635a46;
+    font-size: 0.9em;
+    padding: 20px 40px;
+    font-weight: 400;
+}
+
+#archive a,
+#more a {
+    color: #000;
+}
+
+#archive table {
+    color: #635a46;
+    font-size: 0.9em;
+    font-weight: 400;
+    margin: 20px 40px;
+    width: 620px;
+}
+
+#archive table tr td:last-child {
+    text-align: right;
+}
+
+#archive h2 {
+    color: #635a46;
+    padding: 20px 40px;
+}
+
+.hideButton {
+    text-align: right;
+}
+
+article { 
+    padding: 50px 0;
+}
+
+article a {
+    color: #000;
+}
+
+
+article h2 {
+    font-size: 1.5em;
+    color: #544931;
+    padding-left: 40px;
+    padding-bottom: 20px;
+    font-weight: 700;
+    font-family: 'Raleway';
+}
+
+
+
+
+
+article h2 a {
+    color: #544931;
+}
+
+a {
+    text-decoration: none;
+}
+
+article h3 {
+    font-size: 1em;
+    color: #544931;
+    padding-left: 40px;
+    padding-bottom: 4px;
+    font-weight: 700;
+    font-family: 'Raleway';
+    
+}
+article h3.blogpost-date {
+    font-weight: 300;
+}
+
+article img {
+    padding: 40px 0;
+}
+
+
+article p {
+    font-size: 0.9em;
+    padding: 0 40px 20px 40px;
+    text-align: justify;
+    line-height: 1.4em;
+}
+
+article ul {
+    color: #635a46;
+    list-style-type: circle;
+}
+
+article li {
+    font-size: 0.9em;
+    margin: 0 40px 20px 40px;
+    line-height: 1.4em;
+    
+}
+
+strong {
+    font-weight: 700;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #aaa;
+    font-size: 0.9em;
+}
+
+footer a {
+    color: #fff;
+}
+
+em {
+    font-style: italic;
+}
+
+.sh-code {
+    margin: 20px 40px;
+    font-family: Inconsolata;
+    font-size: 0.9em;
+    padding: 10px;
+}
+
+.left {
+    padding: 0 20px 0 40px;
+    float: left;
+    clear: left; 
+}
+
+.right {
+    padding: 0 40px 0 20px;
+    float: right;
+    clear: right; 
+}
+
+
+.disqusbox {
+    padding: 20px; 
+}
+
+
+.hidden {
+    display: none;
+}

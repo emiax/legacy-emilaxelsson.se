@@ -1,0 +1,5 @@
+RewriteEngine  on
+RewriteRule    ^about$  /index.html
+RewriteRule    ^archive$  /index.html
+RewriteRule    ^posts/(.*)$  /index.html
+

@@ -1,0 +1,27 @@
+<p>
+The last few days, I have been working on what I call the SimpleParser, which has as its responsibility to read math expressions as they are entered by the user and create the expression trees that I mentioned in my last post.
+</p>
+<p>For the <a href="http://continuous.se/demo/">prototype/demo of Continuous </a> I have previously implemented a relatively simple <a href="http://en.wikipedia.org/wiki/Shunting-yard_algorithm"> shunting yard algorithm</a>, which could handle the basic precedence rules of mathematical operators. The implementation was very compact - expressed in only two or three JavaScript functions - and was pretty much a translation of this <a href="http://en.wikipedia.org/wiki/Shunting-yard_algorithm#The_algorithm_in_detail">pseudocode</a> to JavaScript. My lexer (the preprocessing step that separates all the symbols, operators and numbers in the text) consisted of the longest regex string I have ever written. It was a quick hack and it worked as a proof of concept but it was completely unmaintainable.
+</p>
+<p>
+So I decided to rewrite the whole thing and add support for parsing vectors and matrices. The parser I wrote is based on the design by Vaughan Pratt, who wrote a paper on "Top down operator precedence" back in 1973. Using this technique, I succeeded in writing a much more readable and modular design than the previous one. I will not describe further right now how it works, but I recommend this <a href="http://effbot.org/zone/simple-top-down-parsing.htm">excellent article</a> if you are interested in doing something similar. </p><p>Now, I want to talk about today's breakthrough!
+ </p>
+<h3>First round-trip to the Sage Server</h3>
+<p>
+With an almost fully-functional parser and a formatter ready, I had all the ingredients I needed to start building on the communication between the the Continuous browser application and a node.js-server, that in turn communicates with Sage. I made this UML-inspired illustration of the program flow when the client is asking the server to simplify an expression, for example <em>sin(x)^2+cos(x)^2</em> (which always simplifies to <em>1</em>).
+</p>
+<img src="http://emilaxelsson.se/images/continuous-communication1.png"/>
+<p>
+<em>Oh, gosh, that is a lot of modules</em>, you might say. Let me justify some of my design decisions.
+<ul>
+  <li><strong>Super-simple interface for the client.</strong> All the client needs to know is that is has some kind of connection where it can send request objects and receive response objects. This is good because if the current web socket implementation needs to be replaced, this can be done without changing any of the code in the actual visualizations.</li>
+
+  <li><strong>The client-side SocketWrapper.</strong> I have wrapped the web socket inside a <em>SocketWrapper</em> which I assume always has a <em>send</em>-method that is ready to be invoked. The browser native <em>WebSocket</em>'s <em>send</em>-method will through an error if you try to write to a socket that has been closed if the connection was lost. What I did here was to implement a queue of messages inside the SocketWrapper, which is flushed as soon as a connection is available again. This further simplifies things for the client, that would otherwise have to put all of its communication code in a callback that would be invoked from the WebSocket when it was ready for data transfer.</li>
+  
+  <li>
+    <strong>Formatters and Parsers.</strong> The client and server work with <em>Request</em> and <em>Response</em> objects. One approach would just be to just call <em>JSON.stringify</em> and <em>JSON.parse</em> and hope that all the information in these objects would be sent over correctly. But since I want to be able to wrap expression trees inside the requests, they would then recursively be JSON-formatted as well. I would rather use my SimpleFormatter and SimpleParser for this, since these deal with a much more compact format than JSON. Writing my own Formatters and Parsers gives me much more control.
+  </li>
+</ul>
+<h3>Promising results</h3>
+<p>
+I managed to put the above structure together today, and successfully sent my first requests from the Continuous web app to the node.js server. I put together a tiny application where you can edit a mathematical expression and see Sage simplify it <em>live on every keystroke</em>. I was stunned when I saw the results. The possibilities that this brings to dynamic 3D visualization of math are incredible, and I can hardly wait to add a graphics engine on top of all this...</p>
