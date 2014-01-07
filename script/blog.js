@@ -24,7 +24,7 @@ function init() {
     togglables.each(function () {
         var elem = $(this);
         var id = elem.attr('id');
-
+        
         var showButton = $('#' + id + "Show");
         var hideButton = $('#' + id + "Hide");
 
@@ -40,11 +40,16 @@ function init() {
             }
         }
 
-        showButton.click(function () {
+        showButton.unbind();
+        hideButton.unbind();
+        
+        showButton.click(function (evt) {
+            evt.preventDefault();
             setVisible(true);
         });
 
-        hideButton.click(function () {
+        hideButton.click(function (evt) {
+            evt.preventDefault();
             setVisible(false);
         });
 
@@ -56,7 +61,5 @@ function recieveMore(html) {
     more.replaceWith(html);
     init();
 }
-
-
 
 init();
