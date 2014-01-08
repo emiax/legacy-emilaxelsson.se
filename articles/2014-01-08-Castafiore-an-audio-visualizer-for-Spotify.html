@@ -1,0 +1,40 @@
+<p>
+ Fall 2013 Spotify released a new <a href="https://developer.spotify.com/docs/apps/api/1.0/api-audio.html">Audio API</a> which lets you create apps within Spotify that make use of the waveform and the spectrum of the currently playing song. I wanted to try it out and see if I could create something similar to the old visualizations from <a href="http://www.youtube.com/watch?v=p6Vmh7NXzcM">Winamp</a> and <a href="http://www.youtube.com/watch?v=H0d6tSqyN1Y">Windows Media Player</a> back in the early 2000's (while also trying to create something new and interesting).
+</p>
+<p>
+Luckily Spotify has support for WebGL content inside third party apps, which makes it possible to take advantage of the computation power of modern graphics hardware.
+</p>
+
+<img src="http://emilaxelsson.se/images/castafiore1.jpg"/>
+<p><em>Meet Madame Castafiore! Lately I have been naming my hobby projects after Tintin characters, and since this one is very much about music I had no other option than borrowing the name from <a href="http://www.youtube.com/watch?v=8mYKC7CjvdE">The Milanese Nightingale</a>. </em></p>
+
+<img style="float: left; width:300px; height:447px; padding: 15px 35px 15px 0;" src="http://emilaxelsson.se/images/splat1.jpg"/>
+<h3>The idea</h3>
+<p>A good friend of mine recently made a painting by letting paint drops run down on a canvas (not a HTML5 canvas, I am talking about the real deal now). I thought it would be cool to create a Spotify app that automatically splatters paint on a surface depending on the dynamics of the playing song. The paint should then blend with other colors while flowing down the surface.</p>
+<h3>How to do it?</h3>
+<p>I found <a href="http://www.cescg.org/CESCG-2007/papers/Hagenberg-Stuppacher-Ines/cescg_StuppacherInes.pdf">this paper</a> on realtime simulation of water drops on the GPU. To simulate water drops, the authors suggest using a texture where each pixel intensity represents the amount of water in the corresponding area. Once a pixel intensity exceeds a certain limit, the gravitational force on the water will start overcoming the frictional force and it will start flowing down the surface, leaving some traces behind it. The more water, the more speed.</p>
+<p>The paper also presents a way to render the water by adding another render pass, calculating its surface normals and deriving the directions of reflection and refraction. I stole many of these ideas right away and implemented them in JavaScript and GLSL.</p>
+
+<h3>What about color?</h3>
+<p>I wanted my drops to have colors, so I needed to come up with a way for the simulation to take this information into account as well. My first approach was to store the amount of cyan, magenta and yellow pigments in the texture's r, g, and b channels, and the amount of water in the alpha-channel. When blending colors I would add up the pigments, and before rendering I would convert from CMY color to RGB. However, this makes it impossible to represent white paint. Using (0, 0, 0, 1) as CMYA components would naturally mean <em>no pigments and a lot of water.</em></p>
+
+<p>I would need to store both absorption and reflectance for the three color channels in order to allow for both black, white and transparent drops. But since a texture in WebGL can only store four values per pixel, and multiple render targets is not yet supported in the WebGL standard, I decided to use a simpler model where I assume the pigment concentration to be constant. This means that transparent water cannot longer be represented. I consider it a valid tradeoff, since white color probably will look more interesting than transparent water in a audio visualization. When blending colors, I simply calculate an average of the colors being blended, weighted on the contribution of each color.</p>
+
+<p>This is what I had come up with after two days of frenetic coding. The colors were here selected from <a href="http://en.wikipedia.org/wiki/The_Scream">The Scream</a> by <a href="http://http://en.wikipedia.org/wiki/Edvard_Munch">Edvard Munch</a> and blended using the first approach discussed above.</p>
+<img src="http://emilaxelsson.se/images/splat2.jpg"/>
+
+<h3>How to drop the drops when the bass drops?</h3>
+<p>
+  The whole point with an audio visualization is its way to react to the dynamics of the music. I wanted color splats to pop up when there are large changes in the volume of the song. Through Spotify's Audio API, the application is fed with short-time Fourier transforms about ten times per second. By calculating the <a href="http://en.wikipedia.org/wiki/Spectral_flux">spectral flux</a> between the frames, I could detect distinct volume changes in the audio track.
+</p>
+
+<p>Some songs are much more dynamic in their volume than others, and it is not uncommon that one song has parts with much more dynamics than other pieces of it. I found that emitting splats when the flux exceeded a fixed threshold would cause the visualizer to go completely bananas during some songs and become totally inactive during others. I solved this with a buffer keeping track of the latest calculations of the flux, and normalizing the current value with respect to the average flux in the buffer. The size of each splat depends on how much the flux exceeds the threshold.</p>
+<img src="http://emilaxelsson.se/images/splat6.jpg"/>
+<h3>Colors from the album art</h3>
+<p>
+Thanks to Spotify's API, it was easy to fetch the album art of the currently playing song. To make the visualizations more different from song to song, the colors are chosen from the cover. At some volume peaks I also make a slight random color adjustment to the dark background color, giving the whole thing a little more disco feeling.
+</p>
+
+<h3>Listen to Håkan Hellström, or try it yourself!</h3>
+<p>I made a video of what Castafiore painted while listening to Håkan Hellström's <em>Du är snart där</em>. You can watch the video here or download the source code from my <a href="https://github.com/emiax/castafiore">Github repo.</a></p>
+<iframe width="700" height="394" src="//www.youtube.com/embed/2SpgU9ew3nQ?rel=0" frameborder="0" allowfullscreen></iframe>

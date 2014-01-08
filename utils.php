@@ -22,5 +22,5 @@ function permalink($id) {
 }
 
 function niceDate($date) {
-  return date("F d Y", strtotime($date));
+  return date("F j Y", strtotime($date));
 }
