@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <link href='http://fonts.googleapis.com/css?family=Lato:400,700|Raleway:300,400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
     <title>Emil Axelsson</title>
-    <link rel="stylesheet" type="text/css" href="style/reset.css"/>
-    <link rel="stylesheet" type="text/css" href="style/style.css"/>
+    <link rel="stylesheet" type="text/css" href="http://emilaxelsson.se/style/reset.css"/>
+    <link rel="stylesheet" type="text/css" href="http://emilaxelsson.se/style/style.css"/>
 <link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeRDark.css" rel="stylesheet" type="text/css" />
    <script>window.disqus_shortname = 'emilaxelsson';</script>
   </head>
@@ -13,7 +13,7 @@
     <?php include("templates/about.html"); ?>
    <?php include("archive.php"); ?>
     <section id="page">
-      <h1><a href="">emil axelsson</a></h1>
+      <h1><a href="http://emilaxelsson.se">emil axelsson</a></h1>
    
    <?php if (isset($_GET['post'])) include("one.php"); else include("more.php"); ?>
     </section>
@@ -27,7 +27,7 @@
   <script src="http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js" type="text/javascript"></script>
   <script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js" type="text/javascript"></script>
    
-   <script src="script/shConfig.js"></script>
+   <script src="http://emilaxelsson.se/script/shConfig.js"></script>
 
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -41,6 +41,6 @@
 
 
 </script>
-  <script src="script/blog.js" type="text/javascript"></script>
+  <script src="http://emilaxelsson.se/script/blog.js" type="text/javascript"></script>
 </html>
 
