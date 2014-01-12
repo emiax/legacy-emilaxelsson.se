@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="style/reset.css"/>
     <link rel="stylesheet" type="text/css" href="style/style.css"/>
 <link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeRDark.css" rel="stylesheet" type="text/css" />
-
+   <script>window.disqus_shortname = 'emilaxelsson';</script>
   </head>
   <body>
     <?php include("templates/about.html"); ?>
@@ -26,9 +26,9 @@
   <script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
   <script src="http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js" type="text/javascript"></script>
   <script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js" type="text/javascript"></script>
+   
+   <script src="script/shConfig.js"></script>
 
-  <script src="script/shConfig.js"></script>
-  <script>window.disqus_shortname = 'emilaxelsson';</script>
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
